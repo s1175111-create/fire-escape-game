@@ -1,6 +1,6 @@
 const scenes = {
   family: {
-    name: "家庭客厅", icon: "🏠", subtitle: "居家逃生演练", image: "assets/scenes/family-clean.png", ordered: true,
+    name: "家庭客厅", icon: "🏠", subtitle: "居家逃生演练", image: "assets/scenes/family-clean.png", escalatedImage: "assets/scenes/family-fire-escalated.png", escalationReason: "多次错误操作耽误了初期处置和撤离，火势会借易燃物与空气迅速蔓延。", ordered: true,
     mission: "拿毛巾、灭小火、快离开、再报警", intro: "【场景剧情】客厅出现轻微烟雾。先保护口鼻、清除通道障碍，再撤离并报警！",
     summary: "💡 家庭逃生口诀：拿毛巾、灭小火、快离开、再报警！",
     items: [
@@ -12,7 +12,7 @@ const scenes = {
     ]
   },
   mall: {
-    name: "商场公共区", icon: "🏬", subtitle: "公共场所逃生演练", image: "assets/scenes/mall-clean.png", ordered: true,
+    name: "商场公共区", icon: "🏬", subtitle: "公共场所逃生演练", image: "assets/scenes/mall-clean.png", escalatedImage: "assets/scenes/mall-fire-escalated.png", escalationReason: "多次错误操作拖延疏散时机，浓烟和火势会在公共空间内加快扩散。", ordered: true,
     mission: "听广播、看指示、拿防护、用消防栓、走通道", intro: "【场景剧情】商场上方出现烟雾。保持镇定，先听取官方广播，再沿疏散指引安全撤离！",
     summary: "💡 商场逃生口诀：听广播、看指示、拿防护、用消防栓、走安全通道，绝不坐电梯！",
     items: [
@@ -39,7 +39,7 @@ const scenes = {
     ]
   },
   classroom: {
-    name: "教室", icon: "🏫", subtitle: "校园逃生演练", image: "assets/scenes/classroom-teacher-students-door-arrow.png", escalatedImage: "assets/scenes/classroom-fire-escalated.png", ordered: true,
+    name: "教室", icon: "🏫", subtitle: "校园逃生演练", image: "assets/scenes/classroom-teacher-students-door-arrow.png", escalatedImage: "assets/scenes/classroom-fire-escalated.png", escalationReason: "多次错误操作没有及时完成初期灭火与撤离，火势因此扩大、烟雾也会更浓。", ordered: true,
     mission: "捂口鼻、灭小火、辨方向、快撤离", intro: "【场景剧情】上课期间教室角落突发起火，伴随轻微烟雾。先捂住口鼻，再按正确消防知识安全撤离！",
     summary: "教室火灾正确逃生口诀：捂口鼻、灭小火、辨方向、快撤离，不慌乱、不贪恋物品！",
     items: [
@@ -100,7 +100,7 @@ bubbleClose.addEventListener("click", () => {
 function startGame(id) {
   resetBubble();
   const scene = scenes[id];
-  game = { id, score: 100, completed: new Set(), mistakes: new Set(), nextOrder: 1, scene, effects: new Set() };
+  game = { id, score: 100, completed: new Set(), mistakes: new Set(), errorCount: 0, escalated: false, nextOrder: 1, scene, effects: new Set() };
   homeScreen.classList.add("is-hidden");
   gameScreen.classList.remove("is-hidden");
   sceneName.textContent = scene.name;
@@ -151,11 +151,10 @@ function renderSceneEffects() {
 }
 
 function renderGame() {
-  const classroomFireEscalating = game.id === "classroom" && game.mistakes.size >= 2 && !game.effects.has("extinguish");
-  const activeSceneImage = classroomFireEscalating ? game.scene.escalatedImage : game.scene.image;
+  const activeSceneImage = game.escalated ? game.scene.escalatedImage : game.scene.image;
   if (sceneImage.getAttribute("src") !== activeSceneImage) sceneImage.src = activeSceneImage;
   scoreValue.textContent = game.score;
-  stage.classList.toggle("foggy", game.mistakes.size >= 2 && !classroomFireEscalating);
+  stage.classList.toggle("foggy", game.id === "confined" && game.mistakes.size >= 2);
   stage.classList.toggle("mall-elevator-failed", game.id === "mall" && game.effects.has("elevator-fail"));
   stage.classList.toggle("confined-smoky", game.id === "confined" && !game.effects.has("vent"));
   stage.classList.toggle("confined-ventilated", game.id === "confined" && game.effects.has("vent"));
@@ -214,7 +213,8 @@ function chooseItem(item, button) {
       }, 520);
       return;
     }
-    showBubble(`❌ ${item.errorText || `第一要义是确保自身安全。${item.text}`}`, "bad");
+    const escalated = recordEscalationMistake();
+    if (!escalated) showBubble(`❌ ${item.errorText || `第一要义是确保自身安全。${item.text}`}`, "bad");
     playFeedback("wrong");
     showWrongMotion(button);
     return;
@@ -261,7 +261,8 @@ function chooseItem(item, button) {
             : game.id === "confined"
               ? "⚠️ 操作顺序错误！室内毒气未排出，防护效果不足，存在安全隐患。"
               : `⚠️ 先确保自身安全，完成「${current?.stepLabel || current?.label || "当前步骤"}」，再进行「${item.label}」。`;
-    showBubble(message, "bad");
+    const escalated = recordEscalationMistake();
+    if (!escalated) showBubble(message, "bad");
     playFeedback("wrong");
     showWrongMotion(button);
     return;
@@ -287,6 +288,17 @@ function chooseItem(item, button) {
     return;
   }
   showBubble(`✅ ${item.text}`, "good");
+}
+
+function recordEscalationMistake() {
+  if (!game.scene.escalatedImage || game.escalated) return false;
+  game.errorCount += 1;
+  if (game.errorCount !== 2) return false;
+  game.escalated = true;
+  renderGame();
+  resetBubble();
+  showFailure("火势变大", game.scene.escalationReason, "我知道了");
+  return true;
 }
 
 function showWrongMotion(button) {

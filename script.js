@@ -79,6 +79,7 @@ const modalButton = document.querySelector("#modalButton");
 
 let game = null;
 let bubbleTimer = null;
+let bubbleDismissAction = null;
 
 document.querySelectorAll(".scene-card").forEach((card) => card.addEventListener("click", () => startGame(card.dataset.scene)));
 document.querySelector("#backHome").addEventListener("click", showHome);
@@ -93,11 +94,11 @@ modalButton.addEventListener("click", () => {
   if (game?.finished) showHome();
 });
 bubbleClose.addEventListener("click", () => {
-  window.clearTimeout(bubbleTimer);
-  bubble.classList.add("is-hidden");
+  dismissBubble();
 });
 
 function startGame(id) {
+  resetBubble();
   const scene = scenes[id];
   game = { id, score: 100, completed: new Set(), mistakes: new Set(), nextOrder: 1, scene, effects: new Set() };
   homeScreen.classList.add("is-hidden");
@@ -275,7 +276,6 @@ function chooseItem(item, button) {
   }
   if (item.effect) game.effects.add(item.effect);
   if (game.scene.ordered) game.nextOrder += 1;
-  showBubble(`✅ ${item.text}`, "good");
   playFeedback(item.sound || (item.effect === "extinguish" ? "extinguish" : "good"));
   renderGame();
   const requiredDone = [...game.completed].filter((id) => {
@@ -283,8 +283,10 @@ function chooseItem(item, button) {
     return entry && !entry.wrong && !entry.optional && !entry.alternative;
   }).length;
   if (requiredDone === getMainItems(game.scene).length) {
-    window.setTimeout(showWin, game.id === "classroom" || game.id === "confined" ? 950 : 650);
+    showEscapeCompletionBubble(`✅ ${item.text}`);
+    return;
   }
+  showBubble(`✅ ${item.text}`, "good");
 }
 
 function showWrongMotion(button) {
@@ -322,11 +324,35 @@ function playFeedback(kind) {
   oscillator.addEventListener("ended", () => context.close());
 }
 
-function showBubble(text, tone) {
+function resetBubble() {
   window.clearTimeout(bubbleTimer);
+  bubbleTimer = null;
+  bubbleDismissAction = null;
+  bubble.classList.add("is-hidden");
+}
+
+function dismissBubble() {
+  window.clearTimeout(bubbleTimer);
+  bubbleTimer = null;
+  bubble.classList.add("is-hidden");
+  const action = bubbleDismissAction;
+  bubbleDismissAction = null;
+  action?.();
+}
+
+function showBubble(text, tone, duration = 4200, onDismiss = null) {
+  resetBubble();
   bubbleText.textContent = text;
   bubble.className = `knowledge-bubble ${tone}`;
-  bubbleTimer = window.setTimeout(() => bubble.classList.add("is-hidden"), 4200);
+  bubbleDismissAction = onDismiss;
+  bubbleTimer = window.setTimeout(dismissBubble, duration);
+}
+
+function showEscapeCompletionBubble(text) {
+  const completedGame = game;
+  showBubble(text, "good", 5000, () => {
+    if (game === completedGame && !game.finished) showWin();
+  });
 }
 
 function giveHint() {
@@ -346,7 +372,7 @@ function giveHint() {
 function showWin() {
   game.finished = true;
   modalKicker.textContent = `最终得分 ${game.score} 分`;
-  modalTitle.textContent = game.id === "confined" ? "🎉 密闭空间逃生成功！" : "🎉 恭喜通关！";
+  modalTitle.textContent = "🎉 恭喜通关！";
   modalText.textContent = game.scene.summary;
   modalButton.textContent = "继续探索";
   modal.classList.remove("is-hidden");
@@ -361,6 +387,7 @@ function showFailure(title, text, buttonLabel) {
 }
 
 function showHome() {
+  resetBubble();
   gameScreen.classList.add("is-hidden");
   homeScreen.classList.remove("is-hidden");
   modal.classList.add("is-hidden");

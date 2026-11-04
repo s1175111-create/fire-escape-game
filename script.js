@@ -13,13 +13,13 @@ const scenes = {
   },
   mall: {
     name: "商场公共区", icon: "🏬", subtitle: "公共场所逃生演练", image: "assets/scenes/mall-clean.png", ordered: true,
-    mission: "听广播、拿防护、看指示、走楼梯、绝不坐电梯", intro: "【场景剧情】商场上方出现烟雾。保持镇定，先听取官方广播，再沿疏散指引安全撤离！",
-    summary: "💡 商场逃生口诀：听广播、拿防护、看指示、走楼梯、绝不坐电梯！",
+    mission: "听广播、看指示、拿防护、用消防栓、走通道", intro: "【场景剧情】商场上方出现烟雾。保持镇定，先听取官方广播，再沿疏散指引安全撤离！",
+    summary: "💡 商场逃生口诀：听广播、看指示、拿防护、用消防栓、走安全通道，绝不坐电梯！",
     items: [
-      { id: "hydrant", label: "消防栓", x: 31, y: 49, w: 14, h: 28, order: 3, shape: "inset(0 round 12%)", text: "正确！按下消防报警按钮提醒其他人，或由受训人员使用水带灭火！" },
-      { id: "sign", label: "疏散指示牌", x: 46, y: 21, w: 16, h: 13, order: 4, shape: "inset(0 round 18%)", text: "正确！浓烟中视线受阻，一定要跟着发光的绿色指示牌寻找出口！" },
+      { id: "hydrant", label: "消防栓", x: 31, y: 49, w: 14, h: 28, order: 4, shape: "inset(0 round 12%)", text: "正确！按下消防报警按钮提醒其他人，或由受训人员使用水带灭火！" },
+      { id: "sign", label: "疏散指示牌", x: 46, y: 21, w: 16, h: 13, order: 2, shape: "inset(0 round 18%)", text: "正确！浓烟中视线受阻，一定要跟着发光的绿色指示牌寻找出口！" },
       { id: "door", label: "安全通道门", x: 87, y: 50, w: 19, h: 38, order: 5, shape: "inset(0 round 10%)", text: "太棒啦 👍 火灾逃生，走安全通道离开商场！" },
-      { id: "towel", label: "湿毛巾取用点", x: 57, y: 60, w: 14, h: 26, order: 2, shape: "inset(0 round 15%)", text: "正确！商场杂物多浓烟大，利用商场提供的防护工具捂住口鼻！" },
+      { id: "towel", label: "湿毛巾取用点", x: 57, y: 60, w: 14, h: 26, order: 3, shape: "inset(0 round 15%)", text: "正确！商场杂物多浓烟大，利用商场提供的防护工具捂住口鼻！" },
       { id: "broadcast", label: "应急广播", x: 70, y: 21, w: 12, h: 16, order: 1, text: "正确！公共场所发生火灾，首先要保持镇定，仔细听广播里的疏散指令！" },
       { id: "elevator", label: "商场电梯", x: 12, y: 55, w: 20, h: 45, shape: "inset(0 round 10%)", wrong: true, penalty: 30, failure: true, errorText: "致命错误！火灾时极易断电，坐电梯会被困在半空甚至遭遇烟囱效应！" }
     ]

@@ -39,7 +39,7 @@ const scenes = {
     ]
   },
   classroom: {
-    name: "教室", icon: "🏫", subtitle: "校园逃生演练", image: "assets/scenes/classroom-teacher-students-door-arrow.png", ordered: true,
+    name: "教室", icon: "🏫", subtitle: "校园逃生演练", image: "assets/scenes/classroom-teacher-students-door-arrow.png", escalatedImage: "assets/scenes/classroom-fire-escalated.png", ordered: true,
     mission: "捂口鼻、灭小火、辨方向、快撤离", intro: "【场景剧情】上课期间教室角落突发起火，伴随轻微烟雾。先捂住口鼻，再按正确消防知识安全撤离！",
     summary: "教室火灾正确逃生口诀：捂口鼻、灭小火、辨方向、快撤离，不慌乱、不贪恋物品！",
     items: [
@@ -150,8 +150,11 @@ function renderSceneEffects() {
 }
 
 function renderGame() {
+  const classroomFireEscalating = game.id === "classroom" && game.mistakes.size >= 2 && !game.effects.has("extinguish");
+  const activeSceneImage = classroomFireEscalating ? game.scene.escalatedImage : game.scene.image;
+  if (sceneImage.getAttribute("src") !== activeSceneImage) sceneImage.src = activeSceneImage;
   scoreValue.textContent = game.score;
-  stage.classList.toggle("foggy", game.mistakes.size >= 2);
+  stage.classList.toggle("foggy", game.mistakes.size >= 2 && !classroomFireEscalating);
   stage.classList.toggle("mall-elevator-failed", game.id === "mall" && game.effects.has("elevator-fail"));
   stage.classList.toggle("confined-smoky", game.id === "confined" && !game.effects.has("vent"));
   stage.classList.toggle("confined-ventilated", game.id === "confined" && game.effects.has("vent"));
@@ -160,7 +163,6 @@ function renderGame() {
   stage.classList.toggle("confined-mask-ready", game.id === "confined" && game.effects.has("mask"));
   stage.classList.toggle("confined-lit", game.id === "confined" && game.effects.has("flashlight"));
   stage.classList.toggle("confined-escaping", game.id === "confined" && game.effects.has("escape"));
-  stage.classList.toggle("classroom-fire-growing", game.id === "classroom" && game.mistakes.size >= 2);
   stage.classList.toggle("classroom-fire-softened", game.id === "classroom" && game.effects.has("extinguish"));
   stage.classList.toggle("classroom-guiding", game.id === "classroom" && game.effects.has("guide"));
   stage.classList.toggle("classroom-evacuating", game.id === "classroom" && game.effects.has("evacuate"));

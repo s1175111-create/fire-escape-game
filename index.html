@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#6f402e" />
+    <title>火灾逃生小课堂</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="home-screen" id="homeScreen" aria-labelledby="homeTitle">
+        <div class="smoke smoke-one" aria-hidden="true"></div>
+        <div class="smoke smoke-two" aria-hidden="true"></div>
+        <div class="home-heading">
+          <span class="eyebrow">安全小勇士训练营</span>
+          <h1 id="homeTitle" class="brand-title"><img src="assets/title/fire-escape-classroom-title-v3.png" alt="火灾逃生小课堂" /></h1>
+          <p>选择一个场景，学会保护自己，安全离开火场。</p>
+        </div>
+
+        <div class="scene-grid" aria-label="选择火灾逃生场景">
+          <button class="scene-card family-card" type="button" data-scene="family">
+            <img src="assets/covers/family-cover.png" alt="粘土风小房子入口" />
+            <span class="card-sheen" aria-hidden="true"></span>
+            <span class="clay-label"><b>家庭客厅</b><small>居家逃生演练</small></span>
+            <span class="start-chip">开始演练 <i>→</i></span>
+          </button>
+          <button class="scene-card mall-card" type="button" data-scene="mall">
+            <img src="assets/covers/mall-cover.png" alt="粘土风商场入口" />
+            <span class="card-sheen" aria-hidden="true"></span>
+            <span class="clay-label"><b>商场公共区</b><small>公共场所逃生演练</small></span>
+            <span class="start-chip">开始演练 <i>→</i></span>
+          </button>
+          <button class="scene-card confined-card" type="button" data-scene="confined">
+            <img src="assets/covers/confined-cover.png" alt="粘土风地下密闭空间入口" />
+            <span class="card-sheen" aria-hidden="true"></span>
+            <span class="clay-label"><b>密闭空间</b><small>应急避险演练</small></span>
+            <span class="start-chip">开始演练 <i>→</i></span>
+          </button>
+          <button class="scene-card classroom-card" type="button" data-scene="classroom">
+            <img src="assets/covers/classroom-cover.png" alt="粘土风教学楼与教室走廊" />
+            <span class="card-sheen" aria-hidden="true"></span>
+            <span class="clay-label"><b>教室</b><small>校园逃生演练</small></span>
+            <span class="start-chip">开始演练 <i>→</i></span>
+          </button>
+        </div>
+        <p class="home-note">点击场景卡片开始训练</p>
+      </section>
+
+      <section class="game-screen is-hidden" id="gameScreen" aria-live="polite">
+        <header class="game-header">
+          <button class="clay-button back-button" id="backHome" type="button">← 返回首页</button>
+          <div class="scene-title"><span id="sceneIcon">🏠</span><div><strong id="sceneName"></strong><small id="sceneSubtitle"></small></div></div>
+          <div class="score-pill" aria-label="当前得分">得分 <strong id="scoreValue">100</strong></div>
+        </header>
+
+        <section class="mission-bar" aria-label="逃生进度">
+          <div class="mission-copy"><b id="missionTitle">找出正确的逃生道具</b><span id="missionHint">每次点击都会学到一条安全知识。</span></div>
+          <ol class="steps" id="steps" aria-label="任务步骤"></ol>
+        </section>
+
+        <div class="stage-wrap">
+          <div class="stage" id="stage" aria-label="火灾逃生互动场景">
+            <img id="sceneImage" src="" alt="" />
+            <div class="stage-fog" aria-hidden="true"></div>
+            <div class="scene-effects" id="sceneEffects" aria-hidden="true"></div>
+            <div class="hotspots" id="hotspots"></div>
+            <div class="knowledge-bubble is-hidden" id="knowledgeBubble" role="status">
+              <span id="knowledgeText"></span>
+              <button class="knowledge-close" id="knowledgeClose" type="button" aria-label="关闭提示">×</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-actions">
+          <button class="clay-button hint-button" id="hintButton" type="button">💡 给我提示</button>
+          <button class="clay-button quiet-button" id="restartButton" type="button">↻ 重新演练</button>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal is-hidden" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-card">
+        <div class="modal-sparkles" aria-hidden="true">✦ ✧ ✦</div>
+        <p class="modal-kicker" id="modalKicker">安全知识小提示</p>
+        <h2 id="modalTitle"></h2>
+        <p id="modalText"></p>
+        <button class="clay-button modal-button" id="modalButton" type="button">我知道了</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

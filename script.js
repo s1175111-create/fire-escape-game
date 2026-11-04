@@ -1,27 +1,27 @@
 const scenes = {
   family: {
     name: "家庭客厅", icon: "🏠", subtitle: "居家逃生演练", image: "assets/scenes/family-clean.png", ordered: true,
-    mission: "先保护自己，再按顺序安全逃生", intro: "客厅出现轻微烟雾。第一要义是确保自身安全：先用湿毛巾保护口鼻，再按步骤行动！",
-    summary: "家庭火灾小知识：先用湿毛巾保护自己，尽快离开家里，安全后拨打 119！",
+    mission: "拿毛巾、灭小火、快离开、再报警", intro: "【场景剧情】客厅出现轻微烟雾。先保护口鼻、清除通道障碍，再撤离并报警！",
+    summary: "💡 家庭逃生口诀：拿毛巾、灭小火、快离开、再报警！",
     items: [
-      { id: "towel", label: "湿毛巾", x: 27, y: 78, w: 15, h: 18, order: 1, shape: "inset(0 round 22%)", text: "太棒啦 🎉 先用湿毛巾捂住口鼻，挡住有毒浓烟，优先保护自己！" },
-      { id: "extinguisher", label: "家用灭火器", x: 68, y: 50, w: 13, h: 25, order: 2, text: "答对咯 ✨ 确保自身安全后，初期小火可以使用灭火器灭火！" },
-      { id: "door", label: "居家逃生门", x: 90, y: 38, w: 16, h: 34, order: 3, shape: "inset(0 round 12%)", text: "没错 👍 沿着路线，从家门安全逃离火场！" },
-      { id: "phone", label: "报警电话", x: 44, y: 77, w: 15, h: 17, order: 4, text: "非常棒 📞 到达安全区域后拨打 119，通知消防员叔叔！" },
-      { id: "curtain", label: "易燃窗帘", x: 11, y: 28, w: 12, h: 33, shape: "polygon(19% 0, 81% 0, 100% 88%, 76% 100%, 50% 92%, 22% 100%, 0 88%)", wrong: true, text: "小心哦 ⚠️ 窗帘很容易着火，火灾的时候远离它！" }
+      { id: "towel", label: "湿毛巾", x: 27, y: 78, w: 15, h: 18, order: 1, shape: "inset(0 round 22%)", text: "正确！火灾发生时，第一时间用湿毛巾捂住口鼻，防烟防毒！" },
+      { id: "extinguisher", label: "家用灭火器", x: 68, y: 50, w: 13, h: 25, order: 2, text: "正确！面对阻挡逃生路线的初期小火，使用灭火器迅速开辟通道！" },
+      { id: "door", label: "居家逃生门", x: 90, y: 38, w: 16, h: 34, order: 3, shape: "inset(0 round 12%)", text: "正确！防护做好且通道安全后，立刻离开火场，不要贪恋财物！" },
+      { id: "phone", label: "报警电话", x: 44, y: 77, w: 15, h: 17, order: 4, text: "正确！撤离到安全地带后，再拨打 119 报警，确保自身绝对安全！" },
+      { id: "curtain", label: "易燃窗帘", x: 11, y: 28, w: 12, h: 33, shape: "polygon(19% 0, 81% 0, 100% 88%, 76% 100%, 50% 92%, 22% 100%, 0 88%)", wrong: true, penalty: 10, errorText: "小心！窗帘极易燃烧，火灾时必须远离所有易燃物！" }
     ]
   },
   mall: {
     name: "商场公共区", icon: "🏬", subtitle: "公共场所逃生演练", image: "assets/scenes/mall-clean.png", ordered: true,
-    mission: "先保护自己，再按顺序通过安全通道", intro: "商场上方出现烟雾。第一要义是确保自身安全：先保护口鼻，再按指引行动！",
-    summary: "商场火灾小知识：跟着指示牌走安全通道，千万不要搭乘电梯逃生！",
+    mission: "听广播、拿防护、看指示、走楼梯、绝不坐电梯", intro: "【场景剧情】商场上方出现烟雾。保持镇定，先听取官方广播，再沿疏散指引安全撤离！",
+    summary: "💡 商场逃生口诀：听广播、拿防护、看指示、走楼梯、绝不坐电梯！",
     items: [
-      { id: "hydrant", label: "消防栓", x: 31, y: 49, w: 14, h: 28, order: 2, shape: "inset(0 round 12%)", text: "很好！确保自身安全后，消防栓是商场重要的初期消防设备。" },
-      { id: "sign", label: "疏散指示牌", x: 46, y: 21, w: 16, h: 13, order: 4, shape: "inset(0 round 18%)", text: "答对啦 ✨ 跟着疏散指示牌，找到逃生方向！" },
+      { id: "hydrant", label: "消防栓", x: 31, y: 49, w: 14, h: 28, order: 3, shape: "inset(0 round 12%)", text: "正确！按下消防报警按钮提醒其他人，或由受训人员使用水带灭火！" },
+      { id: "sign", label: "疏散指示牌", x: 46, y: 21, w: 16, h: 13, order: 4, shape: "inset(0 round 18%)", text: "正确！浓烟中视线受阻，一定要跟着发光的绿色指示牌寻找出口！" },
       { id: "door", label: "安全通道门", x: 87, y: 50, w: 19, h: 38, order: 5, shape: "inset(0 round 10%)", text: "太棒啦 👍 火灾逃生，走安全通道离开商场！" },
-      { id: "towel", label: "湿毛巾取用点", x: 57, y: 60, w: 14, h: 26, order: 1, shape: "inset(0 round 15%)", text: "很好 ✅ 第一时间拿上湿毛巾，保护自己不吸入浓烟！" },
-      { id: "broadcast", label: "应急广播", x: 70, y: 21, w: 12, h: 16, order: 3, text: "收到 📢 仔细听应急广播，听从工作人员指挥！" },
-      { id: "elevator", label: "商场电梯", x: 12, y: 55, w: 20, h: 45, shape: "inset(0 round 10%)", wrong: true, text: "要记住哦 ⚠️ 火灾电梯很容易故障，逃生绝对不能坐电梯！" }
+      { id: "towel", label: "湿毛巾取用点", x: 57, y: 60, w: 14, h: 26, order: 2, shape: "inset(0 round 15%)", text: "正确！商场杂物多浓烟大，利用商场提供的防护工具捂住口鼻！" },
+      { id: "broadcast", label: "应急广播", x: 70, y: 21, w: 12, h: 16, order: 1, text: "正确！公共场所发生火灾，首先要保持镇定，仔细听广播里的疏散指令！" },
+      { id: "elevator", label: "商场电梯", x: 12, y: 55, w: 20, h: 45, shape: "inset(0 round 10%)", wrong: true, penalty: 30, failure: true, errorText: "致命错误！火灾时极易断电，坐电梯会被困在半空甚至遭遇烟囱效应！" }
     ]
   },
   confined: {
@@ -86,6 +86,10 @@ document.querySelector("#restartButton").addEventListener("click", () => startGa
 document.querySelector("#hintButton").addEventListener("click", giveHint);
 modalButton.addEventListener("click", () => {
   modal.classList.add("is-hidden");
+  if (game?.failed) {
+    startGame(game.id);
+    return;
+  }
   if (game?.finished) showHome();
 });
 bubbleClose.addEventListener("click", () => {
@@ -123,6 +127,10 @@ function getMainItems(scene) {
 }
 
 function renderSceneEffects() {
+  if (game.id === "mall" && game.effects.has("elevator-fail")) {
+    sceneEffects.innerHTML = `<span class="mall-elevator-fail">电梯故障，请重新演练</span>`;
+    return;
+  }
   if (game.id === "confined") {
     sceneEffects.innerHTML = `
       <span class="confined-smoke"></span>
@@ -148,6 +156,7 @@ function renderSceneEffects() {
 function renderGame() {
   scoreValue.textContent = game.score;
   stage.classList.toggle("foggy", game.mistakes.size >= 2);
+  stage.classList.toggle("mall-elevator-failed", game.id === "mall" && game.effects.has("elevator-fail"));
   stage.classList.toggle("confined-smoky", game.id === "confined" && !game.effects.has("vent"));
   stage.classList.toggle("confined-ventilated", game.id === "confined" && game.effects.has("vent"));
   stage.classList.toggle("confined-bucket-ready", game.id === "confined" && game.effects.has("bucket"));
@@ -180,7 +189,7 @@ function renderGame() {
     button.style.setProperty("--hotspot-w", `${item.w || 9}%`);
     button.style.setProperty("--hotspot-h", `${item.h || 12}%`);
     if (item.shape) button.style.setProperty("--hotspot-shape", item.shape);
-    button.disabled = isDone;
+    button.disabled = isDone || game.failed;
     button.addEventListener("click", () => chooseItem(item, button));
     hotspots.appendChild(button);
   });
@@ -193,7 +202,20 @@ function chooseItem(item, button) {
       game.mistakes.add(item.id);
       game.score = Math.max(0, game.score - (item.penalty || 10));
     }
-    showBubble(`❌ 第一要义是确保自身安全。${item.text}`, "bad");
+    if (item.failure) {
+      game.failed = true;
+      game.effects.add("elevator-fail");
+      renderGame();
+      showBubble(`❌ ${item.errorText}`, "bad");
+      playFeedback("wrong");
+      stage.classList.add("stage-shake");
+      window.setTimeout(() => {
+        stage.classList.remove("stage-shake");
+        showFailure("本轮演练结束", "商场电梯在火灾时可能断电、困人，请重新演练并选择安全通道。", "重新演练");
+      }, 520);
+      return;
+    }
+    showBubble(`❌ ${item.errorText || `第一要义是确保自身安全。${item.text}`}`, "bad");
     playFeedback("wrong");
     showWrongMotion(button);
     return;
@@ -213,11 +235,23 @@ function chooseItem(item, button) {
     const earlyClassroomDoor = game.id === "classroom" && item.id === "door";
     const openingDoor = earlyClassroomDoor && game.nextOrder === 1;
     const missingExtinguish = earlyClassroomDoor && game.nextOrder === 2;
-    const penalty = confinedInitialDoor ? 30 : confinedDoor ? 15 : openingDoor ? 20 : missingExtinguish ? 10 : game.id === "confined" ? 15 : 5;
+    const familyPhoneFirst = game.id === "family" && item.id === "phone" && game.nextOrder === 1;
+    const familyNoTowel = game.id === "family" && game.nextOrder === 1 && (item.id === "extinguisher" || item.id === "door");
+    const mallDoorBeforeSign = game.id === "mall" && item.id === "door" && game.nextOrder < 5;
+    const mallOutOfOrder = game.id === "mall";
+    const penalty = familyPhoneFirst ? 20 : familyNoTowel ? 15 : mallDoorBeforeSign ? 15 : mallOutOfOrder ? 10 : confinedInitialDoor ? 30 : confinedDoor ? 15 : openingDoor ? 20 : missingExtinguish ? 10 : game.id === "confined" ? 15 : 5;
     if (!game.mistakes.has(confinedMistakeKey)) game.score = Math.max(0, game.score - penalty);
     game.mistakes.add(confinedMistakeKey);
     if (confinedDoor) game.effects.add("backdraft");
-    const message = confinedInitialDoor
+    const message = familyPhoneFirst
+      ? "❌ 严重错误！火场内环境瞬息万变，千万不能留在屋内打电话，应先逃生！"
+      : familyNoTowel
+        ? "❌ 危险！没有湿毛巾保护，吸入有毒浓烟会晕倒！"
+        : mallDoorBeforeSign
+          ? "⚠️ 危险！商场像迷宫，不跟着指示牌盲目乱跑很容易迷路死胡同！"
+          : mallOutOfOrder
+            ? "⚠️ 操作顺序不佳！优先听取官方广播能让你掌握最安全的逃生路线。"
+            : confinedInitialDoor
       ? "❌ 严重错误！密闭火场严禁直接开门！会引发烟火倒灌、轰燃危险！"
       : confinedDoor
         ? "⚠️ 逃生步骤缺失，准备工作不完整，无法获得满分。"
@@ -317,6 +351,14 @@ function showWin() {
   modalTitle.textContent = game.id === "confined" ? "🎉 密闭空间逃生成功！" : "🎉 恭喜通关！";
   modalText.textContent = game.scene.summary;
   modalButton.textContent = "继续探索";
+  modal.classList.remove("is-hidden");
+}
+
+function showFailure(title, text, buttonLabel) {
+  modalKicker.textContent = `当前得分 ${game.score} 分`;
+  modalTitle.textContent = `⚠️ ${title}`;
+  modalText.textContent = text;
+  modalButton.textContent = buttonLabel;
   modal.classList.remove("is-hidden");
 }
 

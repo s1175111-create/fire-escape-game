@@ -1,13 +1,14 @@
 const scenes = {
   family: {
-    name: "家庭客厅", icon: "🏠", subtitle: "居家逃生演练", image: "assets/scenes/family-clean.png", escalatedImage: "assets/scenes/family-fire-escalated.png", escalationReason: "多次错误操作耽误了初期处置和撤离，火势会借易燃物与空气迅速蔓延。", ordered: true,
+    name: "家庭客厅", icon: "🏠", subtitle: "居家逃生演练", image: "assets/scenes/family-wallet-clean.png", escalatedImage: "assets/scenes/family-wallet-fire-escalated.png", escalationReason: "多次错误操作耽误了初期处置和撤离，火势会借易燃物与空气迅速蔓延。", ordered: true,
     mission: "拿毛巾、灭小火、快离开、再报警", intro: "【场景剧情】客厅出现轻微烟雾。先保护口鼻、清除通道障碍，再撤离并报警！",
     summary: "💡 家庭逃生口诀：拿毛巾、灭小火、快离开、再报警！",
     items: [
       { id: "towel", label: "湿毛巾", x: 27, y: 78, w: 15, h: 18, order: 1, shape: "inset(0 round 22%)", text: "正确！火灾发生时，第一时间用湿毛巾捂住口鼻，防烟防毒！" },
       { id: "extinguisher", label: "家用灭火器", x: 68, y: 50, w: 13, h: 25, order: 2, text: "正确！面对阻挡逃生路线的初期小火，使用灭火器迅速开辟通道！" },
-      { id: "door", label: "居家逃生门", x: 90, y: 38, w: 16, h: 34, order: 3, shape: "inset(0 round 12%)", text: "正确！防护做好且通道安全后，立刻离开火场，不要贪恋财物！" },
-      { id: "phone", label: "报警电话", x: 44, y: 77, w: 15, h: 17, order: 4, text: "正确！撤离到安全地带后，再拨打 119 报警，确保自身绝对安全！" },
+      { id: "door", label: "居家逃生门", x: 90, y: 38, w: 16, h: 34, order: 3, shape: "inset(0 round 12%)", text: "正确！撤离到安全区域后，再拨打 119 报警。" },
+      { id: "phone", label: "报警电话", x: 44, y: 77, w: 15, h: 17, order: 4, hidden: true, text: "正确！撤离到安全地带后，再拨打 119 报警，确保自身绝对安全！" },
+      { id: "wallet", label: "钱包", x: 44, y: 77, w: 15, h: 17, wrong: true, penalty: 10, errorText: "逃生时不要贪恋钱包等财物，会耽误撤离！" },
       { id: "curtain", label: "易燃窗帘", x: 11, y: 28, w: 12, h: 33, shape: "polygon(19% 0, 81% 0, 100% 88%, 76% 100%, 50% 92%, 22% 100%, 0 88%)", wrong: true, penalty: 10, errorText: "小心！窗帘极易燃烧，火灾时必须远离所有易燃物！" }
     ]
   },
@@ -120,7 +121,7 @@ function startGame(id) {
 }
 
 function getMainItems(scene) {
-  return scene.items.filter((item) => !item.wrong && !item.optional && !item.alternative);
+  return scene.items.filter((item) => !item.hidden && !item.wrong && !item.optional && !item.alternative);
 }
 
 function renderSceneEffects() {
@@ -175,7 +176,7 @@ function renderGame() {
   }).join("");
   renderSceneEffects();
   hotspots.innerHTML = "";
-  game.scene.items.forEach((item) => {
+  game.scene.items.filter((item) => !item.hidden).forEach((item) => {
     const button = document.createElement("button");
     const isDone = game.completed.has(item.id);
     button.type = "button";
@@ -281,7 +282,7 @@ function chooseItem(item, button) {
   renderGame();
   const requiredDone = [...game.completed].filter((id) => {
     const entry = game.scene.items.find((candidate) => candidate.id === id);
-    return entry && !entry.wrong && !entry.optional && !entry.alternative;
+    return entry && !entry.hidden && !entry.wrong && !entry.optional && !entry.alternative;
   }).length;
   if (requiredDone === getMainItems(game.scene).length) {
     showEscapeCompletionBubble(`✅ ${item.text}`);
@@ -362,7 +363,7 @@ function showBubble(text, tone, duration = 4200, onDismiss = null) {
 
 function showEscapeCompletionBubble(text) {
   const completedGame = game;
-  showBubble(text, "good", 5000, () => {
+  showBubble(text, "good", 3000, () => {
     if (game === completedGame && !game.finished) showWin();
   });
 }

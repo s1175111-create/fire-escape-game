@@ -81,6 +81,7 @@ const modalButton = document.querySelector("#modalButton");
 let game = null;
 let bubbleTimer = null;
 let bubbleDismissAction = null;
+let classroomFeedbackTimer = null;
 
 document.querySelectorAll(".scene-card").forEach((card) => card.addEventListener("click", () => startGame(card.dataset.scene)));
 document.querySelector("#backHome").addEventListener("click", showHome);
@@ -100,8 +101,10 @@ bubbleClose.addEventListener("click", () => {
 
 function startGame(id) {
   resetBubble();
+  window.clearTimeout(classroomFeedbackTimer);
+  classroomFeedbackTimer = null;
   const scene = scenes[id];
-  game = { id, score: 100, completed: new Set(), mistakes: new Set(), errorCount: 0, escalated: false, nextOrder: 1, scene, effects: new Set() };
+  game = { id, score: 100, completed: new Set(), mistakes: new Set(), errorCount: 0, escalated: false, feedback: null, nextOrder: 1, scene, effects: new Set() };
   homeScreen.classList.add("is-hidden");
   gameScreen.classList.remove("is-hidden");
   sceneName.textContent = scene.name;
@@ -145,8 +148,8 @@ function renderSceneEffects() {
     return;
   }
   sceneEffects.innerHTML = `
-    <span class="effect-cover ${game.effects.has("cover") ? "is-active" : ""}">捂住口鼻</span>
-    <span class="effect-powder ${game.effects.has("extinguish") ? "is-active" : ""}"></span>
+    <span class="effect-cover ${game.feedback === "cover" ? "is-active" : ""}">捂住口鼻</span>
+    <span class="effect-powder ${game.feedback === "extinguish" ? "is-active" : ""}"></span>
     <span class="effect-evacuate ${game.effects.has("evacuate") ? "is-active" : ""}">老师带领同学有序撤离</span>
   `;
 }
@@ -277,6 +280,7 @@ function chooseItem(item, button) {
     if (primary) game.completed.add(primary.id);
   }
   if (item.effect) game.effects.add(item.effect);
+  if (game.id === "classroom" && (item.effect === "cover" || item.effect === "extinguish")) showClassroomFeedback(item.effect);
   if (game.scene.ordered) game.nextOrder += 1;
   playFeedback(item.sound || (item.effect === "extinguish" ? "extinguish" : "good"));
   renderGame();
@@ -300,6 +304,16 @@ function recordEscalationMistake() {
   resetBubble();
   showFailure("火势变大", game.scene.escalationReason, "我知道了");
   return true;
+}
+
+function showClassroomFeedback(type) {
+  window.clearTimeout(classroomFeedbackTimer);
+  game.feedback = type;
+  classroomFeedbackTimer = window.setTimeout(() => {
+    if (game?.id !== "classroom" || game.feedback !== type) return;
+    game.feedback = null;
+    renderGame();
+  }, 1100);
 }
 
 function showWrongMotion(button) {
@@ -401,6 +415,8 @@ function showFailure(title, text, buttonLabel) {
 
 function showHome() {
   resetBubble();
+  window.clearTimeout(classroomFeedbackTimer);
+  classroomFeedbackTimer = null;
   gameScreen.classList.add("is-hidden");
   homeScreen.classList.remove("is-hidden");
   modal.classList.add("is-hidden");

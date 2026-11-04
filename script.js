@@ -126,16 +126,10 @@ function renderSceneEffects() {
   if (game.id === "confined") {
     sceneEffects.innerHTML = `
       <span class="confined-smoke"></span>
-      <span class="confined-vent-flow ${game.effects.has("vent") ? "is-active" : ""}"></span>
       <span class="confined-vent-status ${game.effects.has("vent") ? "is-active" : ""}">排风运行中</span>
-      <span class="confined-water-ripple ${game.effects.has("bucket") ? "is-active" : ""}"></span>
-      <span class="confined-cloth-wave ${game.effects.has("cloth") ? "is-active" : ""}"></span>
-      <span class="confined-mask-aura ${game.effects.has("mask") ? "is-active" : ""}"></span>
-      <span class="confined-light-beam ${game.effects.has("flashlight") ? "is-active" : ""}"></span>
       <span class="confined-door-smoke ${game.effects.has("backdraft") ? "is-active" : ""}"></span>
       <span class="confined-backdraft ${game.effects.has("backdraft") ? "is-active" : ""}">危险：烟火倒灌！</span>
       <span class="confined-warm-light ${game.effects.has("escape") ? "is-active" : ""}"></span>
-      <span class="confined-success-stars ${game.effects.has("escape") ? "is-active" : ""}">✦　✧　✦</span>
       <span class="confined-escape-cue ${game.effects.has("escape") ? "is-active" : ""}">安全撤离</span>
     `;
     return;

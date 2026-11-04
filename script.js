@@ -248,7 +248,7 @@ function chooseItem(item, button) {
         : mallDoorBeforeSign
           ? "⚠️ 危险！商场像迷宫，不跟着指示牌盲目乱跑很容易迷路死胡同！"
           : mallOutOfOrder
-            ? "⚠️ 操作顺序不佳！优先听取官方广播能让你掌握最安全的逃生路线。"
+            ? `⚠️ 操作顺序不佳！请先完成「${current?.stepLabel || current?.label || "当前步骤"}」，再进行「${item.label}」。`
             : confinedInitialDoor
       ? "❌ 严重错误！密闭火场严禁直接开门！会引发烟火倒灌、轰燃危险！"
       : confinedDoor

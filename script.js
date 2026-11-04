@@ -110,15 +110,11 @@ function startGame(id) {
   sceneImage.src = scene.image;
   sceneImage.alt = `${scene.name}火灾逃生互动场景`;
   renderGame();
-  if (id === "confined") {
-    modalKicker.textContent = "场景剧情";
-    modalTitle.textContent = "密闭空间警报";
-    modalText.textContent = scene.intro;
-    modalButton.textContent = "开始自救";
-    modal.classList.remove("is-hidden");
-  } else {
-    showBubble(scene.intro, "good");
-  }
+  modalKicker.textContent = "场景剧情";
+  modalTitle.textContent = `${scene.name}警报`;
+  modalText.textContent = scene.intro;
+  modalButton.textContent = "开始演练";
+  modal.classList.remove("is-hidden");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
